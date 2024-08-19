@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
-import main from "./src/main";
+import App from "./src/app";
 
 dotenv.config();
 
-const server = main;
+const server = new App();
