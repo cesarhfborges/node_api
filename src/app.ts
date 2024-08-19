@@ -3,7 +3,7 @@ import cors from 'cors';
 import helmet from "helmet";
 import morgan from "morgan";
 import {middlewares} from "./middleware";
-import Config from './database/config';
+import {appDataSource} from './database/datasource';
 import logger from "node-color-log";
 import router from "./router";
 
@@ -26,8 +26,13 @@ class App {
   }
 
   async database(): Promise<void> {
-    logger.warn(`Connecting to database`);
-    logger.success(`Database connected successfully!`);
+    try {
+      logger.warn(`Connecting to database`);
+      await appDataSource.initialize();
+      logger.success(`Database connected successfully!`);
+    } catch (e) {
+      logger.error('Error: ', e);
+    }
   }
 
   private setup(): void {

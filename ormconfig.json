@@ -1,0 +1,17 @@
+{
+  "type": "mysql",
+  "host": "localhost",
+  "port": 3306,
+  "username": "cesar",
+  "password": "91344356",
+  "database": "confeccao",
+  "synchronize": true,
+  "logging": false,
+  "migrationsTableName": "migrations",
+  "entities": ["src/entitys/**/*.ts"],
+  "cli": {
+    "entitiesDir": "src/entity",
+    "migrationsDir": "src/migration",
+    "subscribersDir": "src/subscriber"
+  }
+}
