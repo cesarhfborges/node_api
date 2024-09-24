@@ -38,7 +38,8 @@ class AuthController {
         select: [
           'id',
           'email',
-          'senha'
+          'senha',
+          'ativo'
         ]
       });
 

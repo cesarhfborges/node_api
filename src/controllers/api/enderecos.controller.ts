@@ -1,18 +1,19 @@
-import {Request, Response} from "express";
+import {Endereco} from "../../entities";
 import {appDataSource} from "../../database/datasource";
-import {Usuario} from "../../entities";
+import {Request, Response} from "express";
 
-const repository = appDataSource.getRepository(Usuario);
+const repository = appDataSource.getRepository(Endereco);
 
-class PerfilController {
+class EnderecosController {
+
   public async index(req: Request, res: Response): Promise<Response> {
     const {currentUser}: any = req;
     if (!currentUser) {
       return res.status(404).json({message: "not located"});
     }
-    const user = await repository.findOne({
-      where: {id: currentUser.id},
-      relations: ['perfil'],
+    const data = await repository.find({
+      where: {perfil: currentUser.id},
+      // relations: ['perfil', 'perfil.endereco'],
       // select: {
       //   id: true,
       //   email: true,
@@ -23,10 +24,10 @@ class PerfilController {
       //   },
       // },
       // relationLoadStrategy: 'query',
-      transaction: true,
+      // transaction: true,
     });
-    return res.status(200).json(user)
+    return res.status(200).json(data);
   }
 }
 
-export default new PerfilController();
+export default new EnderecosController();

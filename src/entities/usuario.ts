@@ -1,8 +1,11 @@
 import {
   BeforeInsert,
+  BeforeUpdate,
   Column,
   CreateDateColumn,
-  Entity, JoinColumn, OneToOne,
+  Entity,
+  JoinColumn,
+  OneToOne,
   PrimaryGeneratedColumn,
   TableInheritance,
   UpdateDateColumn
@@ -27,6 +30,7 @@ export class Usuario {
 
   @CreateDateColumn({name: 'created_at'})
   created_at?: Date;
+
   @UpdateDateColumn({name: 'updated_at'})
   updated_at?: Date;
 
@@ -35,6 +39,7 @@ export class Usuario {
   perfil: Perfil;
 
   @BeforeInsert()
+  @BeforeUpdate()
   private hashPassword?() {
     this.senha = tokenHelper.encript(this.senha);
   }
