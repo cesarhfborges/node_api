@@ -37,8 +37,6 @@ class AuthController {
         where: {email},
         select: [
           'id',
-          // 'nome',
-          // 'sobrenome',
           'email',
           'senha'
         ]

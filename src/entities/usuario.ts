@@ -10,7 +10,7 @@ import {
 import tokenHelper from "../helpers/token.helper";
 
 @Entity('tb_usuarios', {})
-@TableInheritance({ column: { type: "varchar", name: "tipo_usuario" } })
+@TableInheritance({column: {type: "varchar", name: "tipo_usuario"}})
 export class Usuario {
   @PrimaryGeneratedColumn()
   public id?: number;
@@ -35,14 +35,15 @@ export class Usuario {
   //   }
   // }
 
+  // @OneToOne(() => Funcionario, {cascade: true, persistence: false})
+  // funcionario?: Funcionario;
+  @CreateDateColumn({name: 'created_at'})
+  created_at: Date;
+  @UpdateDateColumn({name: 'updated_at'})
+  updated_at: Date;
+
   @BeforeInsert()
   private hashPassword() {
     this.senha = tokenHelper.encript(this.senha);
   }
-
-  @CreateDateColumn({name: 'created_at'})
-  created_at: Date;
-
-  @UpdateDateColumn({name: 'updated_at'})
-  updated_at: Date;
 }

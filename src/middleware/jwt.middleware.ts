@@ -17,7 +17,7 @@ export function jwtMiddleware(req: Request, res: Response, next: NextFunction) {
       }).end();
     }
     // @ts-ignore
-    req.user = userInfo;
+    req.currentUser = userInfo;
     next();
   });
 }

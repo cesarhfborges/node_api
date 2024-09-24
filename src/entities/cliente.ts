@@ -1,6 +1,7 @@
 import {Entity, OneToOne, PrimaryGeneratedColumn, JoinColumn} from "typeorm";
-import {Pessoa} from "./pessoa";
+import {Perfil} from "./perfil";
 import {Usuario} from "./usuario";
+
 
 
 @Entity({name: "tb_clientes"})
@@ -9,13 +10,13 @@ export class Cliente {
   @PrimaryGeneratedColumn()
   public id?: number;
 
-  @OneToOne(() => Usuario, {cascade: false})
+  @OneToOne(() => Perfil, {cascade: true})
+  @JoinColumn({name: "id_perfil"})
+  perfil: Perfil;
+
+  @OneToOne(() => Usuario, {cascade: true})
   @JoinColumn({name: "id_usuario"})
   usuario: Usuario;
-
-  @OneToOne(() => Pessoa, {cascade: true})
-  @JoinColumn({name: "id_pessoa"})
-  pessoa: Pessoa;
 
   // @PrimaryGeneratedColumn()
   // id: string;

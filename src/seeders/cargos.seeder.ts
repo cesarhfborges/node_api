@@ -11,9 +11,8 @@ export async function cargosSeeder() {
     'Vendedor',
     'Estoquista'
   ];
-  // const size: number = await repository.count();
   for (const cargo of cargos) {
-    await repository.save({nome: cargo});
+    await repository.insert({nome: cargo});
   }
   console.log('Clientes seeded successfully');
 }

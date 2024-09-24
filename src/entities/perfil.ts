@@ -1,22 +1,20 @@
-import {Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn} from "typeorm";
-import {Pessoa} from "./pessoa";
-import {Usuario} from "./usuario";
-import {Cargo} from "./cargo";
+import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {Endereco} from "./endereco";
 
-@Entity('tb_funcionarios', {})
+@Entity('tb_perfil', {})
 export class Perfil {
   @PrimaryGeneratedColumn()
   public id?: number;
 
-  @OneToOne(() => Pessoa, {cascade: true})
-  @JoinColumn({name: "id_pessoa"})
-  pessoa: Pessoa;
+  @Column({type: 'varchar', nullable: false})
+  public nome: string;
 
-  @OneToOne(() => Usuario, {cascade: false})
-  @JoinColumn({name: "id_usuario"})
-  usuario: Usuario;
+  @Column({type: 'varchar'})
+  public sobrenome: string;
 
-  @OneToOne(() => Cargo, {cascade: false})
-  @JoinColumn({name: "id_cargo"})
-  cargo: Cargo;
+  @Column({type: 'varchar'})
+  public cpf: string;
+
+  @OneToMany(() => Endereco, endereco => endereco.perfil, {cascade: false})
+  enderecos: Endereco[];
 }
