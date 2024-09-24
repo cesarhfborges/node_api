@@ -1,18 +1,21 @@
-import {BeforeInsert, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  TableInheritance,
+  UpdateDateColumn
+} from 'typeorm';
 import tokenHelper from "../helpers/token.helper";
 
 // import tokenHelper from '../helpers/token.helper';
 
-@Entity('usuarios', {})
+@Entity('tb_usuarios', {})
+@TableInheritance({ column: { type: "varchar", name: "tipo_usuario" } })
 export class Usuario {
   @PrimaryGeneratedColumn()
   public id?: number;
-
-  @Column({type: 'varchar', nullable: false})
-  public nome: string;
-
-  @Column({type: 'varchar'})
-  public sobrenome: string;
 
   @Column({type: 'varchar', unique: true})
   public email: string;

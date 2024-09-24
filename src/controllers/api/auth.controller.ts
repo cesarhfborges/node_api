@@ -35,7 +35,13 @@ class AuthController {
 
       const usuario = await usuariosRepository.findOne({
         where: {email},
-        select: ['id', 'nome', 'sobrenome', 'email', 'senha']
+        select: [
+          'id',
+          // 'nome',
+          // 'sobrenome',
+          'email',
+          'senha'
+        ]
       });
 
       const passwordIsValid = await TokenHelper.comparePassword(password, usuario);
@@ -81,8 +87,8 @@ class AuthController {
       }
 
       const usuario = new Usuario();
-      usuario.nome = req.body.nome;
-      usuario.sobrenome = req.body.sobrenome;
+      // usuario.nome = req.body.nome;
+      // usuario.sobrenome = req.body.sobrenome;
       usuario.email = req.body.email;
       usuario.senha = req.body.password;
 

@@ -18,6 +18,7 @@ const appDataSource = new DataSource({
   username: CONFIG.database.username,
   password: CONFIG.database.password,
   synchronize: true,
+  dropSchema: true,
   logging: CONFIG.app.dev ? logs : false,
   migrationsTableName: "migrations",
   entities: ["src/entities/**/*.ts"],

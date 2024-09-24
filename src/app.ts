@@ -18,16 +18,20 @@ class App {
   private PUSH_PUBLIC_KEY: string | null = process.env.PUSH_PUBLIC_KEY ?? null;
   private PUSH_PRIVATE_KEY: string | null = process.env.PUSH_PRIVATE_KEY ?? null;
 
-  private express: express.Application;
+  private readonly express: express.Application;
   private server: any;
 
-  constructor() {
+  constructor(https: boolean = false) {
     this.express = express();
     this.database().then(r => {
       this.setup();
       this.controllers();
       this.middleware();
-      this.initSimple();
+      if (https) {
+        this.initHttps();
+      } else {
+        this.initHttp();
+      }
     }).then(() => {
       // this.push_server();
     }).catch(e => {
@@ -41,7 +45,7 @@ class App {
       await appDataSource.initialize();
       logger.success(`Database connected successfully!`);
     } catch (e) {
-      logger.error('Error: ', e);
+      logger.error('Database connection Error: ', e);
     }
   }
 
@@ -94,7 +98,7 @@ class App {
     });
   }
 
-  private initSimple(): void {
+  private initHttp(): void {
     this.express.listen(this.PORT, () => {
       logger.success(`Server is running on http://localhost:${this.PORT}`);
       logger.success(`READY!`);

@@ -10,14 +10,14 @@ export async function clientesSeeder() {
   const lista: any[] = Array.from({length: 30}).map((_, i) => ({
     nome: faker.person.firstName(i % 2 == 0 ? 'male' : 'female'),
     sobrenome: faker.person.lastName(i % 2 == 0 ? 'male' : 'female'),
-    cpf_cnpj: ('00000000000' + faker.number.int({min: 10000000000, max: 99999999999})).slice(-11),
-    cep: '00000000',
-    logradouro: '',
-    bairro: '',
-    numero: '',
-    cidade: '',
-    uf: '',
-    telefone: '',
+    // cpf_cnpj: ('00000000000' + faker.number.int({min: 10000000000, max: 99999999999})).slice(-11),
+    // cep: '00000000',
+    // logradouro: '',
+    // bairro: '',
+    // numero: '',
+    // cidade: '',
+    // uf: '',
+    // telefone: '',
   }));
   // const size = await repository.find();
   for (const item of lista) {

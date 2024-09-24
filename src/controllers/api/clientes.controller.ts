@@ -12,8 +12,8 @@ class ClienteController {
   public async index(req: Request, res: Response): Promise<Response> {
     const data = await repository.find({
       order: {
-        nome: 'ASC',
-        sobrenome: 'ASC'
+        // nome: 'ASC',
+        // sobrenome: 'ASC'
       }
     });
     return res.status(200).json(data);
@@ -32,13 +32,13 @@ class ClienteController {
 
   public async destroy(req: Request, res: Response): Promise<Response> {
     try {
-      const data = await repository.findOneBy({id: req.params.id});
-      if (!data) {
-        return res.status(406).json({
-          message: 'erro'
-        });
-      }
-      await repository.delete({id: req.params.id});
+      // const data = await repository.findOneBy({id: req.params.id});
+      // if (!data) {
+      //   return res.status(406).json({
+      //     message: 'erro'
+      //   });
+      // }
+      // await repository.delete({id: req.params.id});
       return res.status(200).json({
         message: 'Deletado com sucesso.'
       });

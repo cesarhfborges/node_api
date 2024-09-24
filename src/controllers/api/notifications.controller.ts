@@ -1,7 +1,6 @@
 import {Request, Response} from "express";
 import WebPush from "web-push";
 import {ISubscription} from "../../helpers/subscription.interface";
-import logger from "node-color-log";
 
 class NotificationsController {
   public async index(req: Request, res: Response): Promise<Response> {
@@ -16,7 +15,7 @@ class NotificationsController {
 
   public async send(req: Request, res: Response): Promise<Response> {
     try {
-      const { subscription } = req.body as ISubscription;
+      const {subscription} = req.body as ISubscription;
       const a = await WebPush.sendNotification(
         subscription,
         JSON.stringify({
