@@ -2,15 +2,16 @@ import {
   BeforeInsert,
   Column,
   CreateDateColumn,
-  Entity,
+  Entity, JoinColumn, OneToOne,
   PrimaryGeneratedColumn,
   TableInheritance,
   UpdateDateColumn
 } from 'typeorm';
 import tokenHelper from "../helpers/token.helper";
+import {Perfil} from "./perfil";
 
 @Entity('tb_usuarios', {})
-@TableInheritance({column: {type: "varchar", name: "tipo_usuario"}})
+@TableInheritance({column: {type: "varchar", name: "tipo_usuario", nullable: true}})
 export class Usuario {
   @PrimaryGeneratedColumn()
   public id?: number;
@@ -24,26 +25,17 @@ export class Usuario {
   @Column({type: 'boolean', default: false})
   public ativo: boolean;
 
-  // constructor(data?: {id?: number, firstName: string, lastName: string, email: string, password: string, isActive: boolean}) {
-  //   if (data) {
-  //     this.id = data.id;
-  //     this.firstName = data.firstName;
-  //     this.lastName = data.lastName;
-  //     this.email = data.email;
-  //     this.password = data.password;
-  //     this.isActive = data.isActive;
-  //   }
-  // }
-
-  // @OneToOne(() => Funcionario, {cascade: true, persistence: false})
-  // funcionario?: Funcionario;
   @CreateDateColumn({name: 'created_at'})
-  created_at: Date;
+  created_at?: Date;
   @UpdateDateColumn({name: 'updated_at'})
-  updated_at: Date;
+  updated_at?: Date;
+
+  @OneToOne(() => Perfil, u => u.usuario, {cascade: false})
+  @JoinColumn({name: 'id_perfil'})
+  perfil: Perfil;
 
   @BeforeInsert()
-  private hashPassword() {
+  private hashPassword?() {
     this.senha = tokenHelper.encript(this.senha);
   }
 }

@@ -1,5 +1,5 @@
 import {appDataSource} from "../database/datasource";
-import {Cargo, Cliente} from "../entities";
+import {Cargo} from "../entities";
 import {Repository} from "typeorm";
 
 export async function cargosSeeder() {
