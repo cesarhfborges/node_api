@@ -1,9 +1,10 @@
 import {Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Pessoa} from "./pessoa";
 import {Usuario} from "./usuario";
+import {Cargo} from "./cargo";
 
 @Entity('tb_funcionarios', {})
-export class Funcionario {
+export class Perfil {
   @PrimaryGeneratedColumn()
   public id?: number;
 
@@ -11,10 +12,11 @@ export class Funcionario {
   @JoinColumn({name: "id_pessoa"})
   pessoa: Pessoa;
 
-  @OneToOne(() => Usuario, {cascade: true})
+  @OneToOne(() => Usuario, {cascade: false})
   @JoinColumn({name: "id_usuario"})
   usuario: Usuario;
 
-  @Column({type: 'varchar'})
-  cargo: string;
+  @OneToOne(() => Cargo, {cascade: false})
+  @JoinColumn({name: "id_cargo"})
+  cargo: Cargo;
 }

@@ -9,7 +9,7 @@ export class Cliente {
   @PrimaryGeneratedColumn()
   public id?: number;
 
-  @OneToOne(() => Usuario, {cascade: true})
+  @OneToOne(() => Usuario, {cascade: false})
   @JoinColumn({name: "id_usuario"})
   usuario: Usuario;
 

@@ -1,36 +1,31 @@
 import {Repository} from "typeorm";
-import {Funcionario} from "../entities";
+import {Cargo, Perfil, Pessoa, Usuario} from "../entities";
 import {appDataSource} from "../database/datasource";
 import {fakerPT_BR as faker} from "@faker-js/faker";
 import logger from "node-color-log";
 
 export async function usuariosSeeder() {
+  const funcionarioRepository: Repository<Perfil> = appDataSource.getRepository(Perfil);
+  const cargoRepository: Repository<Cargo> = appDataSource.getRepository(Cargo);
 
-  logger.error(self.name);
+  const p = new Pessoa();
+  p.nome = "Administrador";
+  p.sobrenome = "";
+  p.cpf = "00000000000";
 
-  const funcionarioRepository: Repository<Funcionario> = appDataSource.getRepository(Funcionario);
+  const u = new Usuario();
+  u.email = "admin@admin.com";
+  u.senha = "12345678";
 
-  try {
-    const f = new Funcionario();
-    f.pessoa.nome = "Administrador";
-    f.pessoa.sobrenome = "";
-    f.pessoa.cpf = "00000000000";
+  const f = new Perfil();
+  f.pessoa = p;
+  f.usuario = u;
 
-    f.usuario.email = "admin@admin.com";
-    f.usuario.senha = "12345678";
+  const cargos = await cargoRepository.find();
 
-    const obj = funcionarioRepository.create(f);
-    await funcionarioRepository.save(obj);
-  } catch (error) {
-    logger.error(error);
-  }
+  f.cargo = cargos[0];
 
-
-  // const lista: Funcionario[] = Array.from({length: 5}).map((_, i) => {
-  //   const f = new Funcionario();
-  //   f.pessoa.nome = ""
-  //
-  // });
+  await funcionarioRepository.save(f);
 
 
   // const lista: any[] = Array.from({length: 30}).map((_, i) => ({

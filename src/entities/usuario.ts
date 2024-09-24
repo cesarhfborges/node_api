@@ -9,8 +9,6 @@ import {
 } from 'typeorm';
 import tokenHelper from "../helpers/token.helper";
 
-// import tokenHelper from '../helpers/token.helper';
-
 @Entity('tb_usuarios', {})
 @TableInheritance({ column: { type: "varchar", name: "tipo_usuario" } })
 export class Usuario {
