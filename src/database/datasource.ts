@@ -1,29 +1,26 @@
 import * as mysqlDriver from 'mysql';
 import {DataSource} from "typeorm";
+import {LoggerOptions} from "typeorm/logger/LoggerOptions";
+import {CONFIG} from "../config/config";
+
+const logs: LoggerOptions = [
+  'error',
+  'info',
+  'schema'
+];
 
 const appDataSource = new DataSource({
   driver: mysqlDriver,
-  "type": "mysql",
-  "host": "192.168.68.230",
-  "port": 3306,
-  "username": "cesar",
-  "password": "91344356",
-  "database": "confeccao",
-  "synchronize": true,
-  "logging": true,
-  "migrationsTableName": "migrations",
-  "entities": ["src/entitys/**/*.ts"],
-  // "migrations": ["src/migrations/**/*.ts"],
-  // "subscribers": ["src/subscribers/**/*.ts"],
-  // "cli": {
-  //   "entitiesDir": "src/entity",
-  //   "migrationsDir": "src/migration",
-  //   "subscribersDir": "src/subscriber"
-  // }
-  // location: "",
-  // region: "",
-  // resourceArn: "",
-  // secretArn: "",
+  type: "mysql",
+  host: CONFIG.database.host,
+  port: CONFIG.database.port,
+  database: CONFIG.database.database,
+  username: CONFIG.database.username,
+  password: CONFIG.database.password,
+  synchronize: true,
+  logging: CONFIG.app.dev ? logs : false,
+  migrationsTableName: "migrations",
+  entities: ["src/entities/**/*.ts"],
 });
 
 

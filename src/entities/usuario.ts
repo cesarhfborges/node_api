@@ -1,4 +1,5 @@
-import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
+import {BeforeInsert, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm';
+import tokenHelper from "../helpers/token.helper";
 
 // import tokenHelper from '../helpers/token.helper';
 
@@ -33,8 +34,14 @@ export class Usuario {
   //   }
   // }
 
-  // @BeforeInsert()
-  // private hashPassword() {
-  //   this.password = tokenHelper.encript(this.password);
-  // }
+  @BeforeInsert()
+  private hashPassword() {
+    this.senha = tokenHelper.encript(this.senha);
+  }
+
+  @CreateDateColumn({name: 'created_at'})
+  created_at: Date;
+
+  @UpdateDateColumn({name: 'updated_at'})
+  updated_at: Date;
 }

@@ -5,6 +5,7 @@ const router = Router();
 
 router.get('/', ClientesController.index);
 router.post('/', ClientesController.create);
+router.delete('/:id', ClientesController.destroy);
 // router.get('/:id', ClientesController.show);
 // router.put('/:id', ClientesController.update);
 // router.delete('/:id', ClientesController.delete);
