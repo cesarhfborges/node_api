@@ -7,7 +7,6 @@ import {
   JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
-  TableInheritance,
   UpdateDateColumn
 } from 'typeorm';
 import tokenHelper from "../helpers/token.helper";
@@ -19,7 +18,7 @@ export class Usuario {
   @PrimaryGeneratedColumn()
   public id?: number;
 
-  @OneToOne(() => Perfil, u => u.usuario, {cascade: false})
+  @OneToOne(() => Perfil, u => u.usuario, {cascade: false, nullable: false})
   @JoinColumn({name: 'id_perfil'})
   perfil: Perfil;
 

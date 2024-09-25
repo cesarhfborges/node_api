@@ -1,13 +1,15 @@
 import {Request, Response} from "express";
 import {addSeconds, format} from "date-fns";
 import {appDataSource} from "../../database/datasource";
-import {Usuario} from "../../entities";
+import {Perfil, Usuario} from "../../entities";
 import TokenHelper from "../../helpers/token.helper";
 import BrevoMail from "../../notifications/brevo.mail";
 import Joi from "joi";
 import {CONFIG} from "../../config/config";
+import confirmationHash from "../../utils/confirmation-hash";
 
 const usuariosRepository = appDataSource.getRepository(Usuario);
+const perfilRepository = appDataSource.getRepository(Perfil);
 
 class AuthController {
   public async login(req: Request, res: Response): Promise<Response> {
@@ -77,8 +79,8 @@ class AuthController {
   public async register(req: Request, res: Response): Promise<Response> {
     try {
       const schema = Joi.object({
-        // nome: Joi.string().min(3).required(),
-        // sobrenome: Joi.string(),
+        nome: Joi.string().min(3).required(),
+        sobrenome: Joi.string(),
         email: Joi
           .string()
           .email()
@@ -105,12 +107,42 @@ class AuthController {
         return res.status(422).json({message: 'E-Mail informado é inválido ou já se encontra cadastrado.'});
       }
 
+      const p = new Perfil();
+      p.nome = req.body.nome;
+      p.sobrenome = req.body.sobrenome;
+      const perfil = await perfilRepository.save(p);
+
+      const {validade, hash} = confirmationHash();
 
       const usuario = new Usuario();
+      usuario.perfil = perfil;
       usuario.email = req.body.email;
       usuario.senha = req.body.password;
-
+      usuario.codigo_confirmacao = hash;
+      usuario.confirmacao_expiracao = validade;
       await usuariosRepository.insert(usuario);
+
+
+      const client = new BrevoMail();
+      await client.sendMail({
+        mailData: {
+          sender: {
+            name: "Sistema",
+            email: "cesar_silk321@hotmail.com"
+          },
+          subject: "Confirmação de conta",
+          receivers: [
+            {
+              name: usuario.perfil.nome + (usuario.perfil.sobrenome.length > 0 ? ' ' + usuario.perfil.sobrenome : ''),
+              email: usuario.email
+            }
+          ],
+          params: {
+            name: usuario.perfil.nome,
+            URI: `http://localhost:8080/${usuario.codigo_confirmacao}`,
+          }
+        },
+      });
 
       return res.status(200).json({
         message: 'Cadastro efetuado com sucesso.'

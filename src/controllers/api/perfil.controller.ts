@@ -44,8 +44,11 @@ class PerfilController {
         });
       }
 
-      const usuario = await repository.findOneBy({
-        email: req.body.email,
+      const usuario = await repository.findOne({
+        where: {
+          email: req.body.email,
+        },
+        relations: ['perfil'],
       });
 
       if (usuario === null) {
@@ -63,22 +66,22 @@ class PerfilController {
       await client.sendMail({
         mailData: {
           sender: {
-            name: "Cesar",
+            name: "Sistema",
             email: "cesar_silk321@hotmail.com"
           },
           subject: "Confirmação de conta",
           receivers: [
             {
-              name: "Teste",
+              name: usuario.perfil.nome + (usuario.perfil.sobrenome.length > 0 ? ' ' + usuario.perfil.sobrenome : ''),
               email: usuario.email
             }
           ],
           params: {
-            name: 'Cesar Borges',
+            name: usuario.perfil.nome,
             URI: `http://localhost:8080/${usuario.codigo_confirmacao}`,
           }
         },
-      })
+      });
       return res.status(200).json({message: "Confirmação enviada com sucesso, verifique seu email."})
     } catch (e) {
       console.log(e);
@@ -108,7 +111,7 @@ class PerfilController {
     });
 
     if (usuario === null) {
-      return res.status(500).json({message: 'endereco de email não localizado.'});
+      return res.status(500).json({message: 'endereco de email não localizado ou ja confirmado.'});
     }
 
     usuario.codigo_confirmacao = null;
