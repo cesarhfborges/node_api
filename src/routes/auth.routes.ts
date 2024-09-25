@@ -12,4 +12,6 @@ router.delete('/logout', jwtMiddleware, AuthController.logout);
 router.get('/perfil', jwtMiddleware, PerfilController.index);
 router.get('/perfil/enderecos', jwtMiddleware, EnderecosController.index);
 
+router.get('/confirmar-conta', PerfilController.confirmAccount);
+
 export default router;
