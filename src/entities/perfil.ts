@@ -1,7 +1,6 @@
 import {Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Endereco} from "./endereco";
 import {Usuario} from "./usuario";
-import {format} from "date-fns";
 
 @Entity('tb_perfil', {})
 export class Perfil {
@@ -18,10 +17,7 @@ export class Perfil {
     type: 'varchar',
     length: 11,
     unique: true,
-    // transformer: {
-      // from: (value: string) => format(value, 'yyyy-MM-dd\'T\'HH:mm:ss'),
-      // to: (value: string) => new Date(value),
-    // },
+    nullable: true,
   })
   public cpf: string;
 

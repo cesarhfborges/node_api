@@ -17,6 +17,8 @@ export async function usuariosSeeder() {
   const u = new Usuario();
   u.email = "admin@admin.com";
   u.senha = "12345678";
+  u.ativo = true;
+  u.confirmado_em = new Date();
   u.perfil = p;
   await usuarioRepository.save(u);
 

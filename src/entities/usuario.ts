@@ -13,11 +13,15 @@ import {
 import tokenHelper from "../helpers/token.helper";
 import {Perfil} from "./perfil";
 
+// @TableInheritance({column: {type: "varchar", name: "tipo_usuario", nullable: true}})
 @Entity('tb_usuarios', {})
-@TableInheritance({column: {type: "varchar", name: "tipo_usuario", nullable: true}})
 export class Usuario {
   @PrimaryGeneratedColumn()
   public id?: number;
+
+  @OneToOne(() => Perfil, u => u.usuario, {cascade: false})
+  @JoinColumn({name: 'id_perfil'})
+  perfil: Perfil;
 
   @Column({type: 'varchar', unique: true})
   public email: string;
@@ -25,22 +29,29 @@ export class Usuario {
   @Column({type: 'varchar', select: false})
   public senha: string;
 
-  @Column({type: 'boolean', default: false})
+  @Column({type: 'boolean', default: true})
   public ativo: boolean;
 
-  @CreateDateColumn({name: 'created_at'})
-  created_at?: Date;
+  @Column({type: 'datetime', nullable: true})
+  public confirmado_em: Date | null;
 
-  @UpdateDateColumn({name: 'updated_at'})
-  updated_at?: Date;
+  @Column({type: 'varchar', select: false, nullable: true, unique: true})
+  public codigo_confirmacao: string | null;
 
-  @OneToOne(() => Perfil, u => u.usuario, {cascade: false})
-  @JoinColumn({name: 'id_perfil'})
-  perfil: Perfil;
+  @Column({type: 'datetime', select: false, nullable: true})
+  public confirmacao_expiracao: Date | null;
+
+  @CreateDateColumn({name: 'criado_em'})
+  public criado_em?: Date;
+
+  @UpdateDateColumn({name: 'atualizado_em'})
+  public atualizado_em?: Date;
 
   @BeforeInsert()
   @BeforeUpdate()
   private hashPassword?() {
-    this.senha = tokenHelper.encript(this.senha);
+    if (!!this.senha && this.senha.length > 0) {
+      this.senha = tokenHelper.encript(this.senha);
+    }
   }
 }

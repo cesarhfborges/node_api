@@ -1,9 +1,10 @@
 import {Request, Response} from "express";
 import {addSeconds, format} from "date-fns";
-import Joi from "joi";
 import {appDataSource} from "../../database/datasource";
 import {Usuario} from "../../entities";
 import TokenHelper from "../../helpers/token.helper";
+import BrevoMail from "../../notifications/brevo.mail";
+import Joi from "joi";
 import {CONFIG} from "../../config/config";
 
 const usuariosRepository = appDataSource.getRepository(Usuario);
@@ -33,7 +34,11 @@ class AuthController {
       const {email, password} = req.body;
 
       const usuario = await usuariosRepository.findOne({
-        where: {email},
+        where: {
+          email: email,
+          // confirmado_em: Not(IsNull()),
+          // ativo: true
+        },
         select: [
           'id',
           'email',
@@ -48,11 +53,19 @@ class AuthController {
         return res.status(401).json({message: 'Usuário e/ou senha inválidos.'});
       }
 
+      if (!usuario.ativo) {
+        return res.status(401).json({message: 'Usuário inativo.'});
+      }
+
       const access_token = TokenHelper.createToken(usuario);
       const expiration_date = addSeconds(new Date(), CONFIG.jwt.expires_in);
       const expires_at = format(expiration_date, 'yyyy-MM-dd\'T\'HH:mm:ss');
 
-      return res.status(200).send({access_token, token_type: 'Bearer', expires_at});
+      return res.status(200).send({
+        access_token,
+        token_type: 'Bearer',
+        expires_at
+      });
     } catch (e: any) {
       console.log(e)
       return res.status(500).json({
@@ -92,12 +105,12 @@ class AuthController {
         return res.status(422).json({message: 'E-Mail informado é inválido ou já se encontra cadastrado.'});
       }
 
+
       const usuario = new Usuario();
       usuario.email = req.body.email;
       usuario.senha = req.body.password;
 
       await usuariosRepository.insert(usuario);
-      const u = await usuariosRepository.findOne({where: {email: req.body.email}});
 
       return res.status(200).json({
         message: 'Cadastro efetuado com sucesso.'
@@ -113,6 +126,35 @@ class AuthController {
     return res.status(200).json({
       message: 'Cadastro efetuado com sucesso.'
     });
+  }
+
+  private async sendConfirmation(name: string, email: string, key: string): Promise<void> {
+    try {
+      const client = new BrevoMail();
+      await client.sendMail({
+        mailData: {
+          sender: {
+            name: "Cesar",
+            email: "cesar_silk321@hotmail.com"
+          },
+          subject: "Confirmação de conta",
+          receivers: [
+            {
+              name: name,
+              email: email
+            }
+          ],
+          params: {
+            name: name,
+            URI: `http://localhost:8080/${key}`,
+          }
+        },
+      });
+      return Promise.resolve();
+    } catch (e) {
+      console.log(e);
+      return Promise.resolve();
+    }
   }
 }
 

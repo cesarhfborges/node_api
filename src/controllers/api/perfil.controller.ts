@@ -2,6 +2,9 @@ import {Request, Response} from "express";
 import {appDataSource} from "../../database/datasource";
 import {Usuario} from "../../entities";
 import BrevoMail from "../../notifications/brevo.mail";
+import Joi from "joi";
+import {MoreThanOrEqual} from "typeorm";
+import confirmationHash from "../../utils/confirmation-hash";
 
 const repository = appDataSource.getRepository(Usuario);
 
@@ -26,8 +29,36 @@ class PerfilController {
     return res.status(200).json(user)
   }
 
-  public async confirmAccount(req: Request, res: Response): Promise<Response> {
+  public async send(req: Request, res: Response): Promise<Response> {
     try {
+      const schema = Joi.object({
+        email: Joi
+          .string()
+          .email()
+          .required(),
+      });
+      const validate = schema.validate(req.body);
+      if (validate.error) {
+        return res.status(403).json({
+          error: validate.error.details,
+        });
+      }
+
+      const usuario = await repository.findOneBy({
+        email: req.body.email,
+      });
+
+      if (usuario === null) {
+        return res.status(500).json({message: 'endereco de email não localizado.'});
+      }
+
+      const {validade, hash} = confirmationHash();
+
+      usuario.codigo_confirmacao = hash;
+      usuario.confirmacao_expiracao = validade;
+
+      await repository.save(usuario);
+
       const client = new BrevoMail();
       await client.sendMail({
         mailData: {
@@ -38,21 +69,56 @@ class PerfilController {
           subject: "Confirmação de conta",
           receivers: [
             {
-              name: "Cesar",
-              email: "cesarhfborges@gmail.com"
+              name: "Teste",
+              email: usuario.email
             }
           ],
           params: {
             name: 'Cesar Borges',
-            URI: 'http://localhost:8080/',
+            URI: `http://localhost:8080/${usuario.codigo_confirmacao}`,
           }
         },
       })
-      return res.status(200).json({message: "success"})
+      return res.status(200).json({message: "Confirmação enviada com sucesso, verifique seu email."})
     } catch (e) {
       console.log(e);
       return res.status(500).json({message: 'error'})
     }
+  }
+
+  public async confirm(req: Request, res: Response): Promise<Response> {
+    console.log(req.params.key);
+    const schema = Joi.object({
+      key: Joi
+        .string()
+        .required(),
+    });
+    const validate = schema.validate(req.params);
+    if (validate.error) {
+      return res.status(403).json({
+        error: validate.error.details,
+      });
+    }
+
+    const usuario = await repository.findOne({
+      where: {
+        codigo_confirmacao: req.params.key,
+        confirmacao_expiracao: MoreThanOrEqual(new Date())
+      }
+    });
+
+    if (usuario === null) {
+      return res.status(500).json({message: 'endereco de email não localizado.'});
+    }
+
+    usuario.codigo_confirmacao = null;
+    usuario.confirmacao_expiracao = null;
+    usuario.confirmado_em = new Date();
+
+    await repository.save(usuario);
+
+
+    return res.status(200).json({message: 'Conta confirmada com sucesso.'})
   }
 }
 
