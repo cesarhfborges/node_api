@@ -64,8 +64,8 @@ class AuthController {
   public async register(req: Request, res: Response): Promise<Response> {
     try {
       const schema = Joi.object({
-        nome: Joi.string().min(3).required(),
-        sobrenome: Joi.string(),
+        // nome: Joi.string().min(3).required(),
+        // sobrenome: Joi.string(),
         email: Joi
           .string()
           .email()
@@ -82,6 +82,14 @@ class AuthController {
         return res.status(403).json({
           error: validate.error.details,
         });
+      }
+
+      const count = await usuariosRepository.countBy({
+        email: req.body.email,
+      });
+
+      if (count > 0) {
+        return res.status(422).json({message: 'E-Mail informado é inválido ou já se encontra cadastrado.'});
       }
 
       const usuario = new Usuario();

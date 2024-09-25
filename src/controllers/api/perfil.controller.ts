@@ -24,6 +24,10 @@ class PerfilController {
     });
     return res.status(200).json(user)
   }
+
+  public async confirmAccount(req: Request, res: Response): Promise<Response> {
+
+  }
 }
 
 export default new PerfilController();
