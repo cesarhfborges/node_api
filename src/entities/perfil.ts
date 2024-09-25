@@ -1,6 +1,7 @@
 import {Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Endereco} from "./endereco";
 import {Usuario} from "./usuario";
+import {Contato} from "./contato";
 
 @Entity('tb_perfil', {})
 export class Perfil {
@@ -15,7 +16,7 @@ export class Perfil {
 
   @Column({
     type: 'varchar',
-    length: 11,
+    length: 14,
     unique: true,
     nullable: true,
   })
@@ -26,4 +27,7 @@ export class Perfil {
 
   @OneToMany(() => Endereco, endereco => endereco.perfil, {cascade: false})
   enderecos: Endereco[];
+
+  @OneToMany(() => Contato, u => u.perfil, {cascade: false})
+  contatos: Contato[];
 }

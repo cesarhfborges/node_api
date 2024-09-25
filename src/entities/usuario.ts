@@ -18,7 +18,7 @@ export class Usuario {
   @PrimaryGeneratedColumn()
   public id?: number;
 
-  @OneToOne(() => Perfil, u => u.usuario, {cascade: false, nullable: false})
+  @OneToOne(() => Perfil, u => u.usuario, {nullable: false})
   @JoinColumn({name: 'id_perfil'})
   perfil: Perfil;
 
