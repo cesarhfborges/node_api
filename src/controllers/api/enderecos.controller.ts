@@ -8,9 +8,6 @@ class EnderecosController {
 
   public async index(req: Request, res: Response): Promise<Response> {
     const {currentUser}: any = req;
-    if (!currentUser) {
-      return res.status(404).json({message: "not located"});
-    }
     const data = await repository.find({
       where: {perfil: currentUser.id},
       // relations: ['perfil', 'perfil.endereco'],

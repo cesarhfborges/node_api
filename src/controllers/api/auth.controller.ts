@@ -5,7 +5,6 @@ import {appDataSource} from "../../database/datasource";
 import {Usuario} from "../../entities";
 import TokenHelper from "../../helpers/token.helper";
 import {CONFIG} from "../../config/config";
-import jwt from "jsonwebtoken";
 
 const usuariosRepository = appDataSource.getRepository(Usuario);
 
@@ -86,8 +85,6 @@ class AuthController {
       }
 
       const usuario = new Usuario();
-      // usuario.nome = req.body.nome;
-      // usuario.sobrenome = req.body.sobrenome;
       usuario.email = req.body.email;
       usuario.senha = req.body.password;
 

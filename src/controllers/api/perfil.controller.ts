@@ -7,9 +7,6 @@ const repository = appDataSource.getRepository(Usuario);
 class PerfilController {
   public async index(req: Request, res: Response): Promise<Response> {
     const {currentUser}: any = req;
-    if (!currentUser) {
-      return res.status(404).json({message: "not located"});
-    }
     const user = await repository.findOne({
       where: {id: currentUser.id},
       relations: ['perfil'],
