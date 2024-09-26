@@ -3,7 +3,7 @@ import {appDataSource} from "../../database/datasource";
 import {Usuario} from "../../entities";
 import BrevoMail from "../../notifications/brevo.mail";
 import Joi from "joi";
-import {MoreThanOrEqual} from "typeorm";
+import {IsNull, MoreThanOrEqual} from "typeorm";
 import confirmationHash from "../../utils/confirmation-hash";
 
 const repository = appDataSource.getRepository(Usuario);
@@ -47,12 +47,13 @@ class PerfilController {
       const usuario = await repository.findOne({
         where: {
           email: req.body.email,
+          confirmado_em: IsNull()
         },
         relations: ['perfil'],
       });
 
       if (usuario === null) {
-        return res.status(500).json({message: 'endereco de email não localizado.'});
+        return res.status(500).json({message: 'endereco de email não localizado ou ja confirmado.'});
       }
 
       const {validade, hash} = confirmationHash();
@@ -78,7 +79,7 @@ class PerfilController {
           ],
           params: {
             name: usuario.perfil.nome,
-            URI: `http://localhost:8080/${usuario.codigo_confirmacao}`,
+            URI: `http://localhost:3030/api/v1/auth/confirmar-conta/confirm?key${usuario.codigo_confirmacao}`,
           }
         },
       });
@@ -90,13 +91,12 @@ class PerfilController {
   }
 
   public async confirm(req: Request, res: Response): Promise<Response> {
-    console.log(req.params.key);
     const schema = Joi.object({
-      key: Joi
+      confirmation: Joi
         .string()
         .required(),
     });
-    const validate = schema.validate(req.params);
+    const validate = schema.validate(req.query);
     if (validate.error) {
       return res.status(403).json({
         error: validate.error.details,
@@ -105,7 +105,7 @@ class PerfilController {
 
     const usuario = await repository.findOne({
       where: {
-        codigo_confirmacao: req.params.key,
+        codigo_confirmacao: req.query['confirmation'] as string,
         confirmacao_expiracao: MoreThanOrEqual(new Date())
       }
     });

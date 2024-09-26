@@ -12,7 +12,7 @@ router.delete('/logout', jwtMiddleware, AuthController.logout);
 router.get('/perfil', jwtMiddleware, PerfilController.index);
 router.get('/perfil/enderecos', jwtMiddleware, EnderecosController.index);
 
-router.get('/confirmar-conta/confirm/:key', PerfilController.confirm);
+router.get('/confirmar-conta/confirm', PerfilController.confirm);
 router.post('/confirmar-conta/send', PerfilController.send);
 
 export default router;
