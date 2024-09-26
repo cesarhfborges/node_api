@@ -9,8 +9,8 @@ import {Contato} from "./contato";
     type: "varchar",
     // type: "simple-enum",
     // enum: ['cliente', 'funcionario'],
-    name: "tipo_usuario",
-    // default: 'funcionario',
+    name: "tipo_perfil",
+    default: 'cliente',
     nullable: true
   }
 })

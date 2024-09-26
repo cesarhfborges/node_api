@@ -1,8 +1,11 @@
-import {ChildEntity, Column, Entity} from "typeorm";
+import {ChildEntity, JoinColumn, OneToOne} from "typeorm";
 import {Perfil} from "./perfil";
+import {Cargo} from "./cargo";
 
 @ChildEntity('funcionario')
 export class Funcionario extends Perfil {
-  @Column({type: 'varchar', nullable: true})
+
+  @OneToOne(() => Cargo, {nullable: true})
+  @JoinColumn({name: 'id_cargo'})
   cargo: string;
 }

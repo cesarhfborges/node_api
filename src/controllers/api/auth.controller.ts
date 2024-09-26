@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
 import {addSeconds, format} from "date-fns";
 import {appDataSource} from "../../database/datasource";
-import {Perfil, Usuario} from "../../entities";
+import {Cliente, Perfil, Usuario} from "../../entities";
 import TokenHelper from "../../helpers/token.helper";
 import BrevoMail from "../../notifications/brevo.mail";
 import Joi from "joi";
@@ -9,7 +9,7 @@ import {CONFIG} from "../../config/config";
 import confirmationHash from "../../utils/confirmation-hash";
 
 const usuariosRepository = appDataSource.getRepository(Usuario);
-const perfilRepository = appDataSource.getRepository(Perfil);
+const clienteRepository = appDataSource.getRepository(Cliente);
 
 class AuthController {
   public async login(req: Request, res: Response): Promise<Response> {
@@ -107,15 +107,15 @@ class AuthController {
         return res.status(422).json({message: 'E-Mail informado é inválido ou já se encontra cadastrado.'});
       }
 
-      const p = new Perfil();
+      const p = new Cliente();
       p.nome = req.body.nome;
       p.sobrenome = req.body.sobrenome;
-      const perfil = await perfilRepository.save(p);
+      const cliente = await clienteRepository.save(p);
 
       const {validade, hash} = confirmationHash();
 
       const usuario = new Usuario();
-      usuario.perfil = perfil;
+      usuario.perfil = cliente;
       usuario.email = req.body.email;
       usuario.senha = req.body.password;
       usuario.codigo_confirmacao = hash;
