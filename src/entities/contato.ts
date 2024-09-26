@@ -1,7 +1,7 @@
 import {Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Perfil} from "./perfil";
 
-@Entity({name: 'contatos'})
+@Entity({name: 'tb_contatos'})
 export class Contato {
   @PrimaryGeneratedColumn()
   public id?: number;

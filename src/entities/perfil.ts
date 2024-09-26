@@ -1,10 +1,20 @@
-import {Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn, TableInheritance} from "typeorm";
 import {Endereco} from "./endereco";
 import {Usuario} from "./usuario";
 import {Contato} from "./contato";
 
 @Entity('tb_perfil', {})
-export class Perfil {
+@TableInheritance({
+  column: {
+    type: "varchar",
+    // type: "simple-enum",
+    // enum: ['cliente', 'funcionario'],
+    name: "tipo_usuario",
+    // default: 'funcionario',
+    nullable: true
+  }
+})
+export abstract class Perfil {
   @PrimaryGeneratedColumn()
   public id?: number;
 

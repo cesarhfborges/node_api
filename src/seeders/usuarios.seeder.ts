@@ -1,17 +1,19 @@
 import {Repository} from "typeorm";
 import {Endereco, Perfil, Usuario} from "../entities";
 import {appDataSource} from "../database/datasource";
+import {Funcionario} from "../entities/funcionario";
 
 export async function usuariosSeeder() {
   const usuarioRepository: Repository<Usuario> = appDataSource.getRepository(Usuario);
-  const perfilRepository: Repository<Perfil> = appDataSource.getRepository(Perfil);
+  // const perfilRepository: Repository<Perfil> = appDataSource.getRepository(Perfil);
+  const funcionarioRepository: Repository<Funcionario> = appDataSource.getRepository(Funcionario);
   const enderecoRepository: Repository<Endereco> = appDataSource.getRepository(Endereco);
 
-  const p = new Perfil();
-  p.nome = 'administrador';
-  p.sobrenome = "";
-  p.cpf = "00000000000";
-  const perfil = await perfilRepository.save(p);
+  const f = new Funcionario();
+  f.nome = 'administrador';
+  f.sobrenome = "";
+  f.cpf = "00000000000";
+  const perfil = await funcionarioRepository.save(f);
 
 
   const u = new Usuario();
@@ -19,7 +21,7 @@ export async function usuariosSeeder() {
   u.senha = "12345678";
   u.ativo = true;
   u.confirmado_em = new Date();
-  u.perfil = p;
+  u.perfil = f;
   await usuarioRepository.save(u);
 
   const endereco = new Endereco();

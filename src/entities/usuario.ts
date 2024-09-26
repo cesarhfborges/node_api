@@ -12,7 +12,6 @@ import {
 import tokenHelper from "../helpers/token.helper";
 import {Perfil} from "./perfil";
 
-// @TableInheritance({column: {type: "varchar", name: "tipo_usuario", nullable: true}})
 @Entity('tb_usuarios', {})
 export class Usuario {
   @PrimaryGeneratedColumn()
