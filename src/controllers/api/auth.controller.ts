@@ -38,9 +38,9 @@ class AuthController {
       const usuario = await usuariosRepository.findOne({
         where: {
           email: email,
-          // confirmado_em: Not(IsNull()),
-          // ativo: true
+          ativo: true
         },
+        relations: ['perfil'],
         select: [
           'id',
           'email',

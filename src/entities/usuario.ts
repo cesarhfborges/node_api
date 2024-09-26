@@ -11,6 +11,8 @@ import {
 } from 'typeorm';
 import tokenHelper from "../helpers/token.helper";
 import {Perfil} from "./perfil";
+import {Funcionario} from "./funcionario";
+import {Cliente} from "./cliente";
 
 @Entity('tb_usuarios', {})
 export class Usuario {
@@ -51,5 +53,26 @@ export class Usuario {
     if (!!this.senha && this.senha.length > 0) {
       this.senha = tokenHelper.encript(this.senha);
     }
+  }
+
+  public get isFuncionario(): boolean {
+    if (!!this.perfil) {
+      return this.perfil instanceof Funcionario;
+    }
+    throw new Error('Perfil is not set.');
+  }
+
+  public get isCliente(): boolean {
+    if (!!this.perfil) {
+      return this.perfil instanceof Cliente;
+    }
+    throw new Error('Perfil is not set.');
+  }
+
+  public get tipoPerfil(): 'cliente' | 'funcionario' {
+    if (!!this.perfil) {
+      return this.isCliente ? 'cliente' : 'funcionario';
+    }
+    throw new Error('Perfil is not set.');
   }
 }

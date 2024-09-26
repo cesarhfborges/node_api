@@ -19,8 +19,7 @@ class TokenHelper {
   createToken(usuario: Usuario) {
     const payload = {
       id: usuario.id,
-      // nome: usuario.nome,
-      // sobrenome: usuario.sobrenome,
+      tipo: usuario.tipoPerfil,
       email: usuario.email,
     };
     return jwt.sign(payload, CONFIG.jwt.client_secret, {

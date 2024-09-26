@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
 import {appDataSource} from "../../database/datasource";
-import {Usuario} from "../../entities";
+import {Cliente, Funcionario, Usuario} from "../../entities";
 import BrevoMail from "../../notifications/brevo.mail";
 import Joi from "joi";
 import {IsNull, MoreThanOrEqual} from "typeorm";
@@ -11,22 +11,24 @@ const repository = appDataSource.getRepository(Usuario);
 class PerfilController {
   public async index(req: Request, res: Response): Promise<Response> {
     const {currentUser}: any = req;
-    const user = await repository.findOne({
+    const usuario = await repository.findOne({
       where: {id: currentUser.id},
       relations: ['perfil'],
-      // select: {
-      //   id: true,
-      //   email: true,
-      //   ativo: true,
-      //   perfil: {
-      //     nome: true,
-      //     sobrenome: true
-      //   },
-      // },
-      // relationLoadStrategy: 'query',
+      relationLoadStrategy: 'query',
       transaction: true,
     });
-    return res.status(200).json(user)
+    if (usuario?.isFuncionario) {
+      // const perfil = usuario.perfil;
+      console.log('O perfil é do tipo Funcionario');
+      // if (perfil instanceof Funcionario) {
+      //   console.log('O perfil é do tipo Funcionario');
+      // } else if (perfil instanceof Cliente) {
+      //   console.log('O perfil é do tipo Cliente');
+      // }
+    } else {
+      console.log('O perfil é do tipo Cliente');
+    }
+    return res.status(200).json(usuario)
   }
 
   public async send(req: Request, res: Response): Promise<Response> {
