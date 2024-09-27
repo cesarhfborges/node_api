@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
 import {appDataSource} from "../../database/datasource";
-import {Cliente, Funcionario, Usuario} from "../../entities";
+import {Usuario} from "../../entities";
 import BrevoMail from "../../notifications/brevo.mail";
 import Joi from "joi";
 import {IsNull, MoreThanOrEqual} from "typeorm";
@@ -17,18 +17,7 @@ class PerfilController {
       relationLoadStrategy: 'query',
       transaction: true,
     });
-    if (usuario?.isFuncionario) {
-      // const perfil = usuario.perfil;
-      console.log('O perfil é do tipo Funcionario');
-      // if (perfil instanceof Funcionario) {
-      //   console.log('O perfil é do tipo Funcionario');
-      // } else if (perfil instanceof Cliente) {
-      //   console.log('O perfil é do tipo Cliente');
-      // }
-    } else {
-      console.log('O perfil é do tipo Cliente');
-    }
-    return res.status(200).json(usuario)
+    return res.status(200).json(usuario);
   }
 
   public async send(req: Request, res: Response): Promise<Response> {

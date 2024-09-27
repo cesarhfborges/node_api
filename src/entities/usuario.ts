@@ -21,7 +21,7 @@ export class Usuario {
 
   @OneToOne(() => Perfil, u => u.usuario, {nullable: false})
   @JoinColumn({name: 'id_perfil'})
-  perfil: Perfil;
+  perfil: Funcionario | Cliente;
 
   @Column({type: 'varchar', unique: true})
   public email: string;

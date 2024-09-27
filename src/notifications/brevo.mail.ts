@@ -14,8 +14,8 @@ class BrevoMail {
 
   async sendMail(data: { mailData: any; template?: string; attachments?: any[] }): Promise<boolean> {
     try {
-      const { mailData, template, attachments } = data
-      const { receivers, subject, params, sender } = mailData
+      const {mailData, template, attachments} = data
+      const {receivers, subject, params, sender} = mailData
       // const emailTemplateSource = fs.readFileSync(`src/mailer/templates/${template}.html`, 'utf8')
 
       await this.client.sendTransacEmail({
