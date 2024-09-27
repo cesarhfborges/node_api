@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
 import {addSeconds, format} from "date-fns";
 import {appDataSource} from "../../database/datasource";
-import {Cliente, Perfil, Usuario} from "../../entities";
+import {Cliente, Usuario} from "../../entities";
 import TokenHelper from "../../helpers/token.helper";
 import BrevoMail from "../../notifications/brevo.mail";
 import Joi from "joi";
@@ -40,7 +40,6 @@ class AuthController {
           email: email,
           ativo: true
         },
-        // relations: ['perfil'],
         select: [
           'id',
           'email',
@@ -156,7 +155,7 @@ class AuthController {
   public async logout(req: Request, res: Response): Promise<Response> {
     // jwt.
     return res.status(200).json({
-      message: 'Cadastro efetuado com sucesso.'
+      message: 'Logout efetuado com sucesso.'
     });
   }
 
