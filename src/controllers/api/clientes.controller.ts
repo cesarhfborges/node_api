@@ -1,22 +1,29 @@
 import {Request, Response} from "express";
-import {GrantedWith} from "../../permissions";
 import {appDataSource} from "../../database/datasource";
 import {Cliente} from "../../entities";
+import {FindManyOptions} from "typeorm/find-options/FindManyOptions";
+import {GrantedTo} from "../../permissions";
 
 const repository = appDataSource.getRepository(Cliente);
 
-// @GrantedWith('view')
 class ClienteController {
 
-  @GrantedWith('list')
+  @GrantedTo('funcionario')
   public async index(req: Request, res: Response): Promise<Response> {
     try {
-      const data = await repository.find({
-        order: {
-          // nome: 'ASC',
-          // sobrenome: 'ASC'
+      const options: FindManyOptions<Cliente> = {};
+      options.order
+      if (req.query.order_by) {
+        options.order = {
+          nome: 'ASC'
+        };
+        if (!!req.query.order_direction) {
+          options.order = {
+            nome: req.query.order_direction === 'desc' ? 'DESC' : 'ASC',
+          };
         }
-      });
+      }
+      const data = await repository.find(options);
       return res.status(200).json(data);
     } catch (e: any) {
       return res.status(e.statusCode ?? 500).send(e);

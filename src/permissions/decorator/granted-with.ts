@@ -3,7 +3,7 @@ import 'reflect-metadata';
 /**
  * Column decorator used to check a specific class or method can be accessed by the logged in user.
  */
-export function GrantedWith(role: string) {
+export function GrantedWith(role: string | string[]) {
   return function (target: any, propertyKey?: string, descriptor?: PropertyDescriptor) {
 
     console.log('target: ', target);
@@ -15,9 +15,13 @@ export function GrantedWith(role: string) {
       // Se for um metodo, modifica o comportamento do metodo
       const originalMethod = descriptor.value;
       descriptor.value = function (...args: any[]) {
-
+        const {currentUser} = args[0]
         console.log('descriptor: ', this);
-        console.log('args: ', args[0].currentUser);
+        console.log('args: ', currentUser);
+
+        if (!currentUser) {
+          throw new Error(`Access denied to method. Required role: ${role}`);
+        }
 
         // @ts-ignore
         // const userRole = this.userRole;
