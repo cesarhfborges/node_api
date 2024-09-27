@@ -38,7 +38,7 @@ export async function usuariosSeeder() {
 
   await enderecoRepository.insert(endereco);
 
-  const mocks: Funcionario[] | Cliente[] = Array.from({length: 150}).map((_, i) => {
+  const mocks: Funcionario[] | Cliente[] = Array.from({length: 50}).map((_, i) => {
     if (i % 2 === 0) {
       const mock = new Funcionario();
       mock.nome = faker.person.firstName();

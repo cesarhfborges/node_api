@@ -14,5 +14,4 @@ export async function cargosSeeder() {
   for (const cargo of cargos) {
     await repository.insert({nome: cargo});
   }
-  console.log('Clientes seeded successfully');
 }

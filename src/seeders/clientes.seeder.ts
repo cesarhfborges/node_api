@@ -24,5 +24,4 @@ export async function clientesSeeder() {
     const obj = repository.create(item);
     await repository.save(obj);
   }
-  console.log('Clientes seeded successfully');
 }

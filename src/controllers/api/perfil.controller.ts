@@ -13,10 +13,11 @@ class PerfilController {
     const {currentUser}: any = req;
     const usuario = await repository.findOne({
       where: {id: currentUser.id},
-      relations: ['perfil'],
-      relationLoadStrategy: 'query',
+      // relations: ['perfil'],
+      // relationLoadStrategy: 'query',
       transaction: true,
     });
+    console.log(usuario?.tipoPerfil);
     return res.status(200).json(usuario);
   }
 

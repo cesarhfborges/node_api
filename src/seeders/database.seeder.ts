@@ -2,11 +2,14 @@ import {appDataSource} from "../database/datasource";
 import {usuariosSeeder} from "./usuarios.seeder";
 import logger from "node-color-log";
 import {cargosSeeder} from "./cargos.seeder";
-import {DataSource} from "typeorm";
+import {marcasSeeder} from "./marcas.seeder";
+import {modelosSeeder} from "./modelos.seeder";
 
 const seeds = [
   cargosSeeder,
   usuariosSeeder,
+  marcasSeeder,
+  modelosSeeder
   // clientesSeeder,
 ]
 

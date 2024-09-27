@@ -40,7 +40,7 @@ class AuthController {
           email: email,
           ativo: true
         },
-        relations: ['perfil'],
+        // relations: ['perfil'],
         select: [
           'id',
           'email',

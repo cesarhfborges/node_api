@@ -19,9 +19,9 @@ export class Usuario {
   @PrimaryGeneratedColumn()
   public id?: number;
 
-  @OneToOne(() => Perfil, u => u.usuario, {nullable: false})
+  @OneToOne(() => Perfil, u => u.usuario, {nullable: false, eager: true})
   @JoinColumn({name: 'id_perfil'})
-  perfil: Funcionario | Cliente;
+  perfil: Perfil;
 
   @Column({type: 'varchar', unique: true})
   public email: string;
@@ -47,14 +47,6 @@ export class Usuario {
   @UpdateDateColumn({name: 'atualizado_em'})
   public atualizado_em?: Date;
 
-  @BeforeInsert()
-  @BeforeUpdate()
-  private hashPassword?() {
-    if (!!this.senha && this.senha.length > 0) {
-      this.senha = tokenHelper.encript(this.senha);
-    }
-  }
-
   public get isFuncionario(): boolean {
     if (!!this.perfil) {
       return this.perfil instanceof Funcionario;
@@ -74,5 +66,13 @@ export class Usuario {
       return this.isCliente ? 'cliente' : 'funcionario';
     }
     throw new Error('Perfil is not set.');
+  }
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  private hashPassword?() {
+    if (!!this.senha && this.senha.length > 0) {
+      this.senha = tokenHelper.encript(this.senha);
+    }
   }
 }
