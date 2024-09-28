@@ -5,7 +5,7 @@ import NotAllowed from "../../exceptions/not-allowed";
  * Usado para checar a permissão de acesso a um metodo especifico ou classe.
  *
  * Requisito: Classe ou metodo precisa estar encapsulado pela autenticação.
- *
+ * Atenção: O Uso em classes esta em construcao e ate o momento não esta disponivel.
  */
 export function GrantedTo(role: string) {
   return function (target: any, propertyKey?: string, descriptor?: PropertyDescriptor) {
