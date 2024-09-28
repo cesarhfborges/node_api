@@ -1,10 +1,7 @@
-export default class NotFound extends Error {
-  statusCode: number = 403;
-  message: string;
+import Exception from "./exception";
 
+export default class NotFound extends Exception {
   constructor(message: string) {
-    super(message);
-    super.name = this.name;
-    this.message = message;
+    super(404, message);
   }
 }

@@ -61,8 +61,8 @@ class App {
   }
 
   private middleware(): void {
-    this.express.use(middlewares.notFound);
     this.express.use(middlewares.errorHandler);
+    // this.express.use(middlewares.notFound);
   }
 
   private push_server(): void {
