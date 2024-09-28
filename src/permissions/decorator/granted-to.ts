@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import NotAllowed from "../../exceptions/not-allowed";
 
 /**
  * Column decorator used to check a specific class or method can be accessed by the logged in user.
@@ -11,7 +12,7 @@ export function GrantedTo(role: string) {
       descriptor.value = function (...args: any[]) {
         const {currentUser} = args[0];
         if (!currentUser || currentUser.tipo !== role) {
-          throw new Error(`Access denied to method. Required role: ${role}`);
+          throw new NotAllowed(`Access denied to method. Required role: ${role}`);
         }
         return originalMethod.apply(this, args);
       };

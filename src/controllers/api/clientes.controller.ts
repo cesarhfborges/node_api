@@ -10,7 +10,7 @@ class ClienteController {
 
   @GrantedTo('funcionario')
   public async index(req: Request, res: Response): Promise<Response> {
-    try {
+    // try {
       const options: FindManyOptions<Cliente> = {};
       options.order
       if (req.query.order_by) {
@@ -25,9 +25,9 @@ class ClienteController {
       }
       const data = await repository.find(options);
       return res.status(200).json(data);
-    } catch (e: any) {
-      return res.status(e.statusCode ?? 500).send(e);
-    }
+    // } catch (e: any) {
+    //   return res.status(e.statusCode ?? 500).send(e);
+    // }
   }
 
   public async create(req: Request, res: Response): Promise<Response> {
