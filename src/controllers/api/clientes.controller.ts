@@ -12,10 +12,8 @@ class ClienteController {
 
   @GrantedTo('funcionario')
   public async index(req: Request, res: Response): Promise<Response> {
-    // try {
     const options: FindManyOptions<Cliente> = {};
-    options.order
-    if (req.query.order_by) {
+    if (!!req.query.order_by) {
       options.order = {
         nome: 'ASC'
       };
@@ -31,9 +29,7 @@ class ClienteController {
 
   public async show(req: Request, res: Response): Promise<Response> {
     const schema = Joi.object({
-      id: Joi
-        .number()
-        .required(),
+      id: Joi.number().required(),
     });
     const validate = schema.validate(req.params);
     if (validate.error) {
@@ -54,9 +50,27 @@ class ClienteController {
 
   public async create(req: Request, res: Response): Promise<Response> {
     try {
-      // const data = await Clientes.create(req.body);
-      return res.status(200).json({});
+      const schema = Joi.object({
+        nome: Joi.string().min(4).required(),
+        sobrenome: Joi.string().min(4).optional(),
+        cpf: Joi.string().min(11).required()
+      });
+      const validate = schema.validate(req.body, {abortEarly: false});
+      if (validate.error) {
+        return res.status(406).json({
+          error: validate.error.details,
+        });
+      }
+      const count = await repository.countBy({cpf: validate.value.cpf});
+      if (count > 0) {
+        return res.status(406).json({
+          error: 'Cpf já existente',
+        });
+      }
+      const data = await repository.save(req.body);
+      return res.status(200).json({data});
     } catch (error: any) {
+      console.log(error);
       return res.status(406).send({
         message: error.message,
       });
@@ -64,22 +78,21 @@ class ClienteController {
   }
 
   public async destroy(req: Request, res: Response): Promise<Response> {
-    try {
-      // const data = await repository.findOneBy({id: req.params.id});
-      // if (!data) {
-      //   return res.status(406).json({
-      //     message: 'erro'
-      //   });
-      // }
-      // await repository.delete({id: req.params.id});
-      return res.status(200).json({
-        message: 'Deletado com sucesso.'
-      });
-    } catch (error: any) {
-      return res.status(406).send({
-        message: error.message,
+    const schema = Joi.object({id: Joi.number().required()});
+    const validate = schema.validate(req.params, {abortEarly: false});
+    if (validate.error) {
+      return res.status(403).json({
+        error: validate.error.details,
       });
     }
+    const data = await repository.findOneBy({id: validate.value.id});
+    if (!data) {
+      throw new NotFound(`Cliente id \{${validate.value.id}\} não encontrado.`);
+    }
+    await repository.delete({id: validate.value.id});
+    return res.status(200).json({
+      message: 'Deletado com sucesso.'
+    });
   }
 }
 
