@@ -65,6 +65,4 @@ export async function usuariosSeeder() {
     usuario.perfil = mocks[i];
     await usuarioRepository.save(usuario);
   }
-
-
 }
