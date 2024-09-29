@@ -33,7 +33,7 @@ class ConfirmacaoConta {
       });
 
       if (usuario === null) {
-        return res.status(500).json({message: 'endereco de email não localizado ou ja confirmado.'});
+        return res.status(404).json({message: 'endereco de email não localizado ou ja confirmado.'});
       }
 
       const {validade, hash} = confirmationHash();
@@ -91,7 +91,7 @@ class ConfirmacaoConta {
     });
 
     if (usuario === null) {
-      return res.status(500).json({message: 'endereco de email não localizado ou ja confirmado.'});
+      return res.status(404).json({message: 'endereco de email não localizado ou ja confirmado.'});
     }
 
     usuario.codigo_confirmacao = null;
