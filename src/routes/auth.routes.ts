@@ -1,9 +1,10 @@
 import {Router} from "express";
 import {jwtMiddleware} from "../middleware/jwt.middleware";
+import {catchAsync} from "../utils/catch-async";
 import AuthController from "../controllers/api/auth.controller";
 import PerfilController from "../controllers/api/perfil.controller";
 import EnderecosController from "../controllers/api/enderecos.controller";
-import {catchAsync} from "../utils/catch-async";
+import ConfirmacaoConta from "../controllers/api/confirmacao-conta";
 
 const router = Router();
 
@@ -13,7 +14,7 @@ router.delete('/logout', jwtMiddleware, catchAsync(AuthController.logout));
 router.get('/perfil', jwtMiddleware, catchAsync(PerfilController.index));
 router.get('/perfil/enderecos', jwtMiddleware, catchAsync(EnderecosController.index));
 
-router.get('/confirmar-conta/confirm', catchAsync(PerfilController.confirm));
-router.post('/confirmar-conta/send', catchAsync(PerfilController.send));
+router.get('/confirmar-conta/confirm', catchAsync(ConfirmacaoConta.confirm));
+router.post('/confirmar-conta/send', catchAsync(ConfirmacaoConta.send));
 
 export default router;
