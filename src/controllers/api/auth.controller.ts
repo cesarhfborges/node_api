@@ -14,9 +14,6 @@ const clienteRepository = appDataSource.getRepository(Cliente);
 class AuthController {
   public async login(req: Request, res: Response): Promise<Response> {
     try {
-      console.log(req.body)
-
-
       const schema = Joi.object({
         email: Joi
           .string()
