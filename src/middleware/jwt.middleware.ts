@@ -10,12 +10,13 @@ export function jwtMiddleware(req: Request, res: Response, next: NextFunction) {
       message: 'token type is required.'
     }).end();
   }
-  jwt.verify(authorization[1], chavePrivada, (err: any, userInfo: any) => {
+  jwt.verify(authorization[1], chavePrivada, async (err: any, userInfo: any) => {
     if (err) {
       return res.status(401).json({
         message: 'authentication required.'
       }).end();
     }
+    userInfo.permissions = userInfo.permissions ?? [];
     // @ts-ignore
     req.currentUser = userInfo;
     next();

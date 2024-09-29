@@ -4,12 +4,14 @@ import logger from "node-color-log";
 import {cargosSeeder} from "./cargos.seeder";
 import {marcasSeeder} from "./marcas.seeder";
 import {modelosSeeder} from "./modelos.seeder";
+import permissoesSeeder from "./permissoes.seeder";
 
 const seeds = [
+  permissoesSeeder,
   cargosSeeder,
   usuariosSeeder,
   marcasSeeder,
-  modelosSeeder
+  modelosSeeder,
   // clientesSeeder,
 ]
 

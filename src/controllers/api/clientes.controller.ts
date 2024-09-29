@@ -10,7 +10,7 @@ const repository = appDataSource.getRepository(Cliente);
 
 class ClienteController {
 
-  @GrantedTo('funcionario')
+  @GrantedTo('cliente:read')
   public async index(req: Request, res: Response): Promise<Response> {
     const options: FindManyOptions<Cliente> = {};
     if (!!req.query.order_by) {

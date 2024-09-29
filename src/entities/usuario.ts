@@ -5,6 +5,8 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn
@@ -13,6 +15,8 @@ import tokenHelper from "../helpers/token.helper";
 import {Perfil} from "./perfil";
 import {Funcionario} from "./funcionario";
 import {Cliente} from "./cliente";
+import {Grupo} from "./grupo";
+import {Permissao} from "./permissao";
 
 @Entity('tb_usuarios', {})
 export class Usuario {
@@ -46,6 +50,22 @@ export class Usuario {
 
   @UpdateDateColumn({name: 'atualizado_em'})
   public atualizado_em?: Date;
+
+  @ManyToMany(() => Grupo, {eager: true})
+  @JoinTable({
+    name: 'tb_usuarios_grupos',
+    joinColumn: {name: 'id_usuario', referencedColumnName: 'id'},
+    inverseJoinColumn: {name: 'id_grupo', referencedColumnName: 'id'},
+  })
+  grupos: Grupo[];
+
+  @ManyToMany(() => Permissao, {eager: true})
+  @JoinTable({
+    name: 'tb_usuarios_permissoes',
+    joinColumn: {name: 'id_usuario', referencedColumnName: 'id'},
+    inverseJoinColumn: {name: 'id_permissao', referencedColumnName: 'id'},
+  })
+  permissoes: Permissao[];
 
   public get isFuncionario(): boolean {
     if (!!this.perfil) {
