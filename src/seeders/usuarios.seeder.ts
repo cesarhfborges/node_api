@@ -1,9 +1,8 @@
 import {Repository} from "typeorm";
 import {Endereco, Perfil, Usuario} from "../entities";
 import {appDataSource} from "../database/datasource";
-import {Funcionario} from "../entities/funcionario";
+import {Funcionario, Cliente} from "../entities";
 import {fakerPT_BR as faker} from "@faker-js/faker";
-import {Cliente} from "../entities/cliente";
 
 export async function usuariosSeeder() {
   const usuarioRepository: Repository<Usuario> = appDataSource.getRepository(Usuario);
@@ -59,8 +58,8 @@ export async function usuariosSeeder() {
       await clienteRepository.save(mocks[i]);
     }
     const usuario = new Usuario();
-    usuario.email = `${mocks[i].nome.toLowerCase()}.${mocks[i].sobrenome.toLowerCase()}.${faker.number.int({min: 1000, max: 9999})}@teste.com.br`;
-    usuario.senha = '123456789';
+    usuario.email = `${mocks[i].nome.toLowerCase()}.${mocks[i].sobrenome.toLowerCase()}.${faker.number.int({min: 1000, max: 9999})}@teste.com.br`.replace(' ', '');
+    usuario.senha = '12345678';
     usuario.ativo = true;
     usuario.confirmado_em = new Date();
     usuario.perfil = mocks[i];
