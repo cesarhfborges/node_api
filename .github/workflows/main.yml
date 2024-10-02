@@ -19,4 +19,5 @@ jobs:
         node-version: 18.x
     - run: npm install
     - run: npm run build
+    - run: npm run copy
     - run: pm2 restart confeccao-api --env production
