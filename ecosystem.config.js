@@ -1,10 +1,13 @@
 module.exports = {
     apps: [{
         name: "confeccao-api",
-        script: "./dist/index.js",
+        cwd: './dist/',
+        script: "./index.js",
         watch: false,
         instances: 4,
         exec_mode: "cluster",
+        source_map_support: true,
+        log_date_format: 'YYYY-MM-DD HH:mm:ss',
         env: {
             DEVELOPMENT: true,
             PORT: 3030,
