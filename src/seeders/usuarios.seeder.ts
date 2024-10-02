@@ -3,12 +3,16 @@ import {Endereco, Perfil, Usuario} from "../entities";
 import {appDataSource} from "../database/datasource";
 import {Funcionario, Cliente} from "../entities";
 import {fakerPT_BR as faker} from "@faker-js/faker";
+import {Permissao} from "../entities/permissao";
 
 export async function usuariosSeeder() {
   const usuarioRepository: Repository<Usuario> = appDataSource.getRepository(Usuario);
   const funcionarioRepository: Repository<Funcionario> = appDataSource.getRepository(Funcionario);
   const clienteRepository: Repository<Cliente> = appDataSource.getRepository(Cliente);
   const enderecoRepository: Repository<Endereco> = appDataSource.getRepository(Endereco);
+  const permissaoRepository: Repository<Permissao> = appDataSource.getRepository(Permissao);
+
+  const permissoes = await permissaoRepository.find();
 
   const f = new Funcionario();
   f.nome = 'administrador';
@@ -23,6 +27,7 @@ export async function usuariosSeeder() {
   u.ativo = true;
   u.confirmado_em = new Date();
   u.perfil = f;
+  u.permissoes = permissoes;
   await usuarioRepository.save(u);
 
   const endereco = new Endereco();
