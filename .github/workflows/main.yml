@@ -8,28 +8,31 @@ jobs:
   build:
     runs-on: self-hosted
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js 18.x
-      uses: actions/setup-node@v2
-      with:
-        node-version: 18.x
-    - run: npm install
-    - run: npm run build
-    - run: pm2 startOrReload ecosystem.config.js --update-env
-
-  create-tag:
-    runs-on: self-hosted
-    needs: build
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js 18.x
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v2
         with:
           node-version: 18.x
-      - name: match-tag-to-package-version
-        id: match-tag-to-package-version
-        uses: geritol/match-tag-to-package-version@0.2.0
-#        with:
-#          TAG_PREFIX: v
+
+      - name: Check if tag already exists
+        id: check-tag
+        run: |
+          PACKAGE_VERSION=$(jq -r .version < package.json)
+          TAG_EXISTS=$(git tag --list "v$PACKAGE_VERSION")
+          if [ -n "$TAG_EXISTS" ]; then
+            echo "Tag v$PACKAGE_VERSION already exists."
+            exit 1
+          else
+            echo "Tag does not exist. Proceeding with tag creation."
+          fi
+      - run: npm install
+      - run: npm run build
+      - run: pm2 startOrReload ecosystem.config.js --update-env
+      - name: Create tag
+        if: success()
+        run: |
+          PACKAGE_VERSION=$(jq -r .version < package.json)
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "v$PACKAGE_VERSION" -m "Release version $PACKAGE_VERSION"
+          git push origin "v$PACKAGE_VERSION"
