@@ -19,5 +19,5 @@ jobs:
         node-version: 18.x
     - run: npm install
     - run: npm run build
-    - run: pm2 delete confeccao-api
+#    - run: pm2 delete confeccao-api
     - run: pm2 startOrReload confeccao-api --update-env
