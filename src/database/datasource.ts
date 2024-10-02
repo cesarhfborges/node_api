@@ -21,7 +21,7 @@ const dataSourceConfig: DataSourceOptions = {
   synchronize: false,
   logging: CONFIG.app.dev ? logs : false,
   migrationsTableName: "migrations",
-  entities: ["src/entities/**/*.ts"],
+  entities: ["src/entities/**/*{.js,.ts}"],
 }
 
 const appDataSource = new DataSource(dataSourceConfig);
