@@ -20,4 +20,5 @@ jobs:
     - run: npm install
     - run: npm run build
 #    - run: pm2 delete confeccao-api
-    - run: pm2 startOrReload confeccao-api --update-env
+#    - run: pm2 startOrReload confeccao-api --update-env
+    - run: pm2 startOrReload ecosystem.config.js --update-env
