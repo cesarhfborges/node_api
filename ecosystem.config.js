@@ -1,7 +1,7 @@
 module.exports = {
     apps: [{
         name: "confeccao-api",
-        cwd: './www/',
+        cwd: './dist/',
         script: "./index.js",
         watch: false,
         instances: 4,
