@@ -10,7 +10,7 @@ module.exports = {
             PORT: 3030,
             CLIENT_SECRET: "48cf66a8095af6ef07061475dfb905de94db7a8f0d4d5a6008a12635f2f37117",
             TOKEN_EXPIRES: 3600,
-            DB_HOST: "192.168.68.230",
+            DB_HOST: "127.0.0.1",
             DB_PORT: 3306,
             DB_DATABASE: "confeccao",
             DB_USERNAME: "cesar",
