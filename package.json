@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node dist/index.js",
     "dev": "nodemon",
-    "build": "shx rm -rf build dist && tsc && shx cp .env ./dist/.env",
+    "build": "shx rm -rf build dist && tsc",
+    "copy": "shx cp .env ./dist/.env",
     "test": "echo \"Error: no test specified\" && exit 1",
     "typeorm": "typeorm-ts-node-esm -d ./ormconfig.json",
     "typeorm:seed": "ts-node .\\src\\seeders\\database.seeder.ts",
