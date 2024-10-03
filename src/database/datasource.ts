@@ -20,6 +20,7 @@ const dataSourceConfig: DataSourceOptions = {
   password: CONFIG.database.password,
   synchronize: false,
   logging: CONFIG.app.dev ? logs : false,
+  cache: !CONFIG.app.dev ?? false,
   migrationsTableName: "migrations",
   maxQueryExecutionTime: 1000,
   entities: ["src/entities/**/*{.js,.ts}"],

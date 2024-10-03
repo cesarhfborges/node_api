@@ -1,14 +1,10 @@
 import {Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn, TableInheritance} from "typeorm";
-import {Endereco} from "./endereco";
-import {Usuario} from "./usuario";
-import {Contato} from "./contato";
+import {Endereco, Usuario, Contato} from "./";
 
 @Entity('tb_perfil', {})
 @TableInheritance({
   column: {
     type: "varchar",
-    // type: "simple-enum",
-    // enum: ['cliente', 'funcionario'],
     name: "tipo_perfil",
     default: 'cliente',
     nullable: true
