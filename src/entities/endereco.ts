@@ -1,8 +1,8 @@
-import {Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Perfil} from "./perfil";
 
 @Entity('tb_enderecos', {})
-export class Endereco {
+export class Endereco extends BaseEntity {
   @PrimaryGeneratedColumn()
   public id?: number;
 

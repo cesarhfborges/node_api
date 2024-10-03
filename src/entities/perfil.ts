@@ -1,4 +1,4 @@
-import {Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn, TableInheritance} from "typeorm";
+import {BaseEntity, Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn, TableInheritance} from "typeorm";
 import {Endereco, Usuario, Contato} from "./";
 
 @Entity('tb_perfil', {})
@@ -10,7 +10,7 @@ import {Endereco, Usuario, Contato} from "./";
     nullable: true
   }
 })
-export abstract class Perfil {
+export abstract class Perfil extends BaseEntity {
   @PrimaryGeneratedColumn()
   public id?: number;
 
