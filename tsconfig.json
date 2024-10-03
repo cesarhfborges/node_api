@@ -6,6 +6,7 @@
     "baseUrl": "./",
     "allowJs": true,
     "outDir": "./dist",
+    "moduleResolution": "node",
     "removeComments": true,
     "esModuleInterop": true,
     "strictPropertyInitialization": false,
