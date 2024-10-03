@@ -21,6 +21,6 @@ module.exports = {
             PUSH_PUBLIC_KEY: "BKWiZwn04o6hd0jRj8YS2KQongnFBJGrqql7_yZQR6TWQuAIDYxPrkgfbC8Z16h_8s103A6fUJ1wQ0CHnzfi7gk",
             PUSH_PRIVATE_KEY: "XeUgymVifP_IpOivQTatBT1bjJP6turOez2veEFSjfY",
             BREVO_API_KEY: "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"
-        },
+        }
     }]
 }
