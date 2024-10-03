@@ -12,9 +12,13 @@ jobs:
 
       - name: Use Node.js 18.x
         uses: actions/setup-node@v2
+        if: success()
         with:
           node-version: 18.x
 
       - run: npm install
+        if: success()
       - run: npm run build
+        if: success()
       - run: pm2 startOrReload ecosystem.config.js --update-env
+        if: success()
