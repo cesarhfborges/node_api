@@ -33,6 +33,7 @@ class App {
         this.initHttp();
       }
     }).then(() => {
+      // INICIA O SERVIDOR PUSH
       // this.push_server();
     }).catch(e => {
       logger.error('error', e);
