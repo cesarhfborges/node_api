@@ -4,4 +4,7 @@ import App from "./src/app";
 
 dotenv.config();
 
+// TESTE
+// sdjmfhsdkjfhas
+
 const server = new App();
