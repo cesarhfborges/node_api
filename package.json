@@ -7,7 +7,11 @@
     "dev": "nodemon",
     "build": "shx rm -rf build dist && tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "typeorm": "typeorm-ts-node-esm -d ./ormconfig.json",
+    "typeorm": "ts-node ./node_modules/typeorm/cli.js -d ./src/database/datasource.ts",
+    "typeorm:schema:sync": "npm run typeorm schema:sync",
+    "typeorm:schema:log": "npm run typeorm schema:log",
+    "typeorm:cache:clear": "npm run typeorm cache:clear",
+    "typeorm:migration:generate": "npm run typeorm migration:generate",
     "typeorm:seed": "ts-node .\\src\\seeders\\database.seeder.ts",
     "generate:secret": "node -e \"console.log(require('crypto').randomBytes(32).toString('hex'))\""
   },
@@ -29,7 +33,7 @@
     "mysql": "^2.18.1",
     "node-color-log": "^12.0.1",
     "reflect-metadata": "^0.2.2",
-    "typeorm": "^0.3.20",
+    "typeorm": "0.3.21-dev.e7649d2",
     "uuid4": "^2.0.3",
     "web-push": "^3.6.7"
   },
