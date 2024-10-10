@@ -24,10 +24,16 @@ export function GrantedTo(role: string | string[]) {
           LEFT JOIN tb_usuarios_grupos as u ON u.id_grupo = g.id_grupo
           LEFT JOIN tb_usuarios_permissoes as pp ON pp.id_permissao = p.id
           WHERE u.id_usuario = ${currentUser.id} OR pp.id_usuario = ${currentUser.id};
-         `
+         `;
         const permissions: any[] = await appDataSource.query(query);
-        if (!currentUser || permissions.findIndex(p => p.chave === role) < 0) {
-          throw new NotAllowed(`Acesso negado, usuário não possui permissão ao ce acesso ao recurso.`);
+        if (!currentUser) {
+          throw new NotAllowed(`Acesso negado, usuário não identificado.`);
+        }
+        const hasPermission = permissions.some(p =>
+          typeof role === 'string' ? p.chave === role : role.includes(p.chave)
+        );
+        if (!hasPermission) {
+          throw new NotAllowed(`Acesso negado, usuário não possui permissão ao de acesso ao recurso.`);
         }
         return originalMethod.apply(this, args);
       };
