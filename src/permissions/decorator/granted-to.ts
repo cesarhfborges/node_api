@@ -1,15 +1,16 @@
 import 'reflect-metadata';
 import NotAllowed from "../../exceptions/not-allowed";
 import {appDataSource} from "../../database/datasource";
-import {Permissao} from "../../entities/permissao";
 
 /**
  * Usado para checar a permissão de acesso a um metodo especifico ou classe.
  *
  * Requisito: Classe ou metodo precisa estar encapsulado pela autenticação.
  * Atenção: O Uso em classes esta em construcao e ate o momento não esta disponivel.
+ *
+ * @param role informe a(s) regra(s) que deseja validar, como string ou um array de strings.
  */
-export function GrantedTo(role: string) {
+export function GrantedTo(role: string | string[]) {
   return function (target: any, propertyKey?: string, descriptor?: PropertyDescriptor) {
     if (descriptor) {
       // Se for um metodo, modifica o comportamento do metodo

@@ -11,6 +11,7 @@ import {appDataSource} from './database/datasource';
 import logger from "node-color-log";
 import router from "./router";
 import {CONFIG} from "./config/config";
+import {initOpenApi, openApiInstance, setupOpenAPI} from "./config/openapi";
 
 class App {
 
@@ -55,6 +56,8 @@ class App {
     this.express.use(helmet());
     this.express.use(express.json());
     this.express.use(cors());
+    setupOpenAPI(this.express, openApiInstance);
+    initOpenApi(this.express, openApiInstance);
   }
 
   private controllers(): void {
